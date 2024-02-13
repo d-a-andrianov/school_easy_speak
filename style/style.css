@@ -1,0 +1,577 @@
+/* задаем размер блоку как коробке, а не по контенту, т.е. при задании размера блоку он будет этих размеров, паддинги, границы будут входить в общий размер */
+html {
+  box-sizing: border-box;
+}
+
+/* наследование (от родителя) box-sizing на все эл-ты */
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/* задаем общие св-ва для всего документа */
+body {
+  /* задаем min-width исходя из размера минимального макета (чтобы не сжималось меньше) */
+  min-width: 320px;
+  font-family: Arial, sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 1.4;
+  color: #153236;
+  background-color: #fff;
+}
+
+h1,
+h2,
+h3,
+fieldset,
+ul,
+p {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* задаем размеры для контейнера */
+.container {
+  /* размер с учетом ширины контенера (1180px) первого макета (1440 px) и отступов второго макета (например адаптива на 1024px отступы по 72px с каждой стороны), сразу прибавляем к ширине контейнера (первого макета) ширину падингов (второго макета) и выставляем их (1180 + 72*2 получаем max-width) */
+  max-width: 1324px;
+  padding: 0 72px;
+  /* размещаем по центру (сверху снизу марджин 0, слева-справа автоматически */
+  margin: 0 auto;
+}
+
+.main-button {
+  /* вместо паддингов по кругу можем задать так (кнопка будет менять размер вместе с блоком в котором находится: */
+  max-width: 380px;
+  width: 100%;
+  height: 73px;
+  padding: 10px;
+  /* padding: 24px 57px; */
+  gap: 10px;
+  background-color: #9CEEF9;
+  border: 1px solid #8EECF9;
+  box-shadow: 0px 16px 16px 0px #C2F8FF;
+  border-radius: 40px;
+  color: #000;
+  /* св-во будет наследоваться */
+  font-size: inherit;
+  font-weight: 700;
+  line-height: 1.4;
+  cursor: pointer;
+  /* настройки работы эффектов состояний кнопки (будет работать для hover) */
+  transition-property: background-color;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in-out;
+}
+
+/* используем focus-visible чтобы не было рамочки при клике */
+.main-button:focus-visible {
+  outline: none;
+  border-color: #59D7E9;
+}
+
+.main-button:active {
+  box-shadow: 0px 6px 16px 0px #C2F8FF;
+}
+
+.main-button:disabled {
+  box-shadow: none;
+  background-color: #D7D7D7;
+  border-color: #D7D7D7;
+  cursor: default;
+}
+
+.header {
+  padding: 20px 0;
+}
+
+.header__container {
+  display: flex;
+  /* выравниваем по краям */
+  justify-content: space-between;
+  /* выравниваем по вертикали по центру */
+  align-items: center;
+}
+
+.header__phone {
+  font-weight: 700;
+  color: #000;
+  text-decoration: none;
+  /* добавляем иконку трубку через bg */
+  background-image: url('../image/call.svg');
+  /* иконку не повторяем */
+  background-repeat: no-repeat;
+  /* иконка всегда слева */
+  background-position: left;
+  padding-left: 29px;
+  /* цвет шрифта будет менять с задержкой */
+  transition: color 0.36s ease-in-out;
+}
+
+/* состояния кнопок */
+/* ховер эффект при наведении */
+.header__phone:hover {
+  color: #7FE4EB;
+}
+
+.header__phone:focus {
+  outline-offset: 5px;
+  color: #7FE4EB;
+  outline-color: #7FE4EB;
+  ;
+}
+
+/* .hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+} */
+
+.hero__container {
+  display: flex;
+  /* расстояние между 2 флексами */
+  gap: 72px;
+  justify-content: space-between;
+}
+
+.hero__content {
+  /* размер для всего блока */
+  flex-basis: 480px;
+  padding-top: 85px;
+  padding-bottom: 150px;
+}
+
+/* добавляем фото девушки через псевдокласс */
+.hero__container::after {
+  /* убираем контент */
+  content: '';
+  flex-grow: 1;
+  background-image: url('../image/girl.png');
+  /* двигаем картинку к нижнему краю */
+  background-position: center;
+  background-repeat: no-repeat;
+  /* самая длиная часть фото будет занимать всё пространство */
+  background-size: contain;
+}
+
+/* дублируем шрифт, т.к. на MacOs может отобрадаться не корректно */
+.hero__title {
+  margin-bottom: 16px;
+}
+
+.hero__title-strong {
+  display: block;
+  font-family: 'Arial Black';
+  font-weight: 900;
+  line-height: 1.2;
+  font-size: 54px;
+}
+
+.hero__subtitle {
+  display: block;
+  font-weight: 400;
+  font-size: 40px;
+  line-height: 1;
+}
+
+.hero__description {
+  /* желательно для высоты min height, для ширины max width */
+  max-width: 380px;
+  margin-bottom: 50px;
+}
+
+.hero__button {
+  margin-bottom: 110px;
+}
+
+/* модальное окно */
+.modal {
+  /* отключаем для подключения через JS */
+  display: none;
+  /* фиксируем модальное окно */
+  position: fixed;
+  /* вместо координат */
+  inset: 0;
+  /* отступы вокруг модального окна */
+  padding: 20px;
+  /* включаем скролл по оси Y */
+  overflow-y: auto;
+  /* затеменение при открытии модального окна */
+  background-color: rgba(0, 0, 0, 0.6);
+  /* покажем курсор вокруг модального окна (оверлея), чтобы было понятно, что туда тоже можно кликнуть (для закрытия модалки) */
+  cursor: pointer;
+}
+
+.modal_open {
+  display: flex;
+}
+
+.modal__body {
+  /* делаем position, чтобы спозиционировать кнопку крестик */
+  position: relative;
+  /* модальное оконо будет по центру (с родителем флексом будет работать не только по горизонтали, но и по вертикали) */
+  margin: auto;
+  background-color: #fff;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+  border-radius: 30px;
+  padding: 50px;
+  /* задаем ширину блока */
+  flex-basis: 1180px;
+  /* курсор по умолчанию, чтобы была разница с оверлеем */
+  cursor: default;
+}
+
+.modal__title {
+  max-width: 480px;
+  /* центруем текст */
+  text-align: center;
+  /* центруем блок */
+  margin: 0 auto;
+  font-family: 'Arial Black';
+  font-weight: 900;
+  font-size: 30px;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.modal__description {
+  max-width: 480px;
+  /* центруем блок */
+  margin: 0 auto;
+  text-align: center;
+  margin-bottom: 45px;
+  font-size: 18px;
+}
+
+.modal__close {
+  /* позиционируем крестик */
+  position: absolute;
+  top: 30px;
+  right: 50px;
+
+  /* убираем полоску у svg */
+  line-height: 0;
+  /* убираем background */
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  color: #9D9D9D;
+  cursor: pointer;
+  /* эффект при наведении */
+  transition: color 0.2s ease;
+}
+
+.form__fieldset {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  /* добавляем флекс, чтобы раскидать эл-ты внутри */
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 45px;
+}
+
+.form__label {
+  /* растягиваем лейблы */
+  flex-grow: 1;
+  /* добавляем флекс чтобы раскидать лейбл текст и инпут */
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.form__label-text {
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.form__input {
+  border: 1px solid #E3E3E3;
+  border-radius: 8px;
+  height: 60px;
+  /* отступ для текста в инпуте слева и справа */
+  padding: 0 20px;
+}
+
+.form__submit {
+  display: block;
+  margin: 0 auto;
+}
+
+/* прописываем, чтобы на мобильном устройстве не было сработки hover при нажатии на кнопку */
+/* ховер эффекты */
+
+@media (hover: hover) {
+  .hero__phone:hover {
+    color: #59d7e9;
+  }
+
+  .main-button:hover {
+    background-color: #8BE3EF;
+  }
+
+  .modal__close:hover {
+    color: #000;
+  }
+}
+
+.hero__languages {
+  display: grid;
+  /* 3 столбца размером по контенту */
+  grid-template-columns: repeat(3, min-content);
+  /* расстоояние по вертикали по горизонтали */
+  gap: 9px 35px;
+  /* убираем паддинги у списка */
+  padding-left: 0px;
+  /* убираем маркеры у списка */
+  list-style: none;
+}
+
+/* позиционируем маркеры */
+.hero__language {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* стилизуем маркеры */
+.hero__language::before {
+  /* убираем контент */
+  content: '';
+  /* эл-т блочный */
+  display: block;
+  /* размеры маркера */
+  width: 6px;
+  height: 6px;
+  /* делаем маркер круглым */
+  border-radius: 50%;
+}
+
+/* красим маркеры в разный цвет, с помощью marker */
+.hero__language_yellow::before {
+  background-color: #FFC700;
+}
+
+.hero__language_blue::before {
+  background-color: #0066FF;
+}
+
+.hero__language_red::before {
+  background-color: #FF0000;
+}
+
+.hero__language_pink::before {
+  background-color: #DB00FF;
+}
+
+.hero__language_powder::before {
+  background-color: #DE7BAB;
+}
+
+.hero__language_green::before {
+  background-color: #05FF00;
+}
+
+@media (max-width: 1200px) {
+  .hero__container {
+    gap: 56px;
+  }
+
+  .hero__container::after {
+    background-image: url('../image/girl_laptop.png');
+  }
+
+  .hero__content {
+    /* размер для всего блока */
+    /* flex-basis базовый размер к которму будет стремиться контент */
+    flex-basis: 410px;
+    padding-top: 25px;
+    padding-bottom: 126px;
+  }
+
+  .hero__title {
+    margin-bottom: 26px;
+  }
+
+  .hero__button {
+    margin-bottom: 80px;
+  }
+
+  .modal__body {
+    flex-basis: 880px;
+  }
+}
+
+@media (max-width: 1000px) {
+  body {
+    font-size: 14px;
+  }
+
+  .header {
+    padding-top: 24px;
+  }
+
+  .container {
+    padding: 0 44px;
+  }
+
+  .header__container {
+    max-height: 25px;
+  }
+
+  .header__phone {
+    padding-left: 26px;
+  }
+
+  .hero__container {
+    gap: 42px;
+  }
+
+  .hero__container::after {
+    background-image: url('../image/girl_tablet.png');
+  }
+
+  .hero__content {
+    /* размер для всего блока */
+    flex-basis: 280px;
+    padding-top: 15px;
+    padding-bottom: 89px;
+  }
+
+  .hero__title {
+    margin-bottom: 20px;
+  }
+
+  .hero__title-strong {
+    font-size: 30px;
+  }
+
+  .hero__subtitle {
+    font-size: 24px;
+  }
+
+  .hero__description {
+    margin-bottom: 30px;
+  }
+
+  .main-button {
+    height: 50px;
+    box-shadow: 0px 6px 16px 0px #C2F8FF;
+    }
+
+  .hero__button {
+    margin-bottom: 40px;
+  }
+
+  .hero__languages {
+    display: grid;
+    /* 2 столбца размером по контенту */
+    grid-template-columns: repeat(2, min-content);
+    /* расстоояние по вертикали по горизонтали */
+    gap: 10px 36px;
+  }
+
+  .form__submit {
+    height: 68px;
+  }
+
+  .modal__body {
+    flex-basis: 680px;
+    padding: 30px 100px;
+  }
+
+  .modal__close {
+    top: 25px;
+    right: 30px;
+  }
+
+  .modal__title {
+    font-size: 24px;
+    margin-bottom: 15px;
+    /* чтобы текст красиво оставался (не переносился), как на макете */
+    max-width: 440px;
+  }
+
+  .modal__description {
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+
+  /* переносим инпуты в колонку */
+  .form__fieldset {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 36px;
+  }
+}
+
+@media (max-width: 700px) {
+  .container {
+    padding: 0 20px;
+  }
+
+  .header__logo {
+    width: 100px;
+  }
+
+  .hero__container {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .hero__container::after {
+    /* задаем размер картинки с девушкой */
+    flex-basis: 245px;
+    background-position: right bottom;
+    background-image: url('../image/girl-mobile.png');
+  }
+
+  .hero__content {
+    padding-top: 5px;
+    padding-bottom: 0;
+    max-width: 280px;
+    align-self: center;
+  }
+
+  .hero__title-strong {
+    margin-bottom: 4px;
+  }
+
+  .modal__body {
+    padding: 30px 10px;
+    border-radius: 20px;
+  }
+
+  .modal__description {
+    margin-bottom: 8px;
+  }
+
+  .modal__description {
+    top: 5px;
+    right: 10px;
+  }
+
+  .form__submit {
+    height: 50px;
+  }
+
+  .form__fieldset {
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .form__input {
+    height: 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero__container {
+    flex-direction: column;
+  }
+}
